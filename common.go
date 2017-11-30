@@ -1,4 +1,4 @@
-package GoogleGrabber
+package googleGrabber
 
 import (
 	"time"
