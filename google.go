@@ -56,7 +56,7 @@ func googleResultParsing(response *http.Response, rank int) ([]SearchResult, err
 	return results, err
 }
 
-func GoogleScrapeMultiPage(searchTerm, countryCode, languageCode, proxyString string, pages, count, backoff int) ([]SearchResult, error){
+func GoogleScrape(searchTerm, countryCode, languageCode, proxyString string, pages, count, backoff int) ([]SearchResult, error){
 	results := []SearchResult{}
 	resultCounter := 0
 	googlePages, err := buildGoogleUrls(searchTerm, countryCode, languageCode, pages, count)
