@@ -42,7 +42,7 @@ func googleResultParsing(response *http.Response, rank int) ([]SearchResult, err
 		desc := descTag.Text()
 		title := titleTag.Text()
 		link = strings.Trim(link, " ")
-		if link != "" && link != "#"{
+		if link != "" && link != "#" && !strings.HasPrefix(link, "/"){
 			result := SearchResult{
 				rank,
 				link,
