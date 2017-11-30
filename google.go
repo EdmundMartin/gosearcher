@@ -15,7 +15,7 @@ func buildGoogleUrls(searchTerm, countryCode, languageCode string, pages, count 
 	if googleBase, found := googleDomains[countryCode]; found {
 		for i := 0; i < pages; i++ {
 			start := i * count
-			scrapeUrl := fmt.Sprintf("%s%s&num=100&hl=%s&start=%d&filter=0", googleBase, searchTerm, languageCode, start)
+			scrapeUrl := fmt.Sprintf("%s%s&num=%s&hl=%s&start=%d&filter=0", googleBase, searchTerm, count, languageCode, start)
 			toScrape = append(toScrape, scrapeUrl)
 		}
 	} else {
@@ -64,7 +64,6 @@ func GoogleScrapeMultiPage(searchTerm, countryCode, languageCode, proxyString st
 		return nil, err
 	}
 	for _, page := range googlePages {
-		fmt.Println(page)
 		res, err := scrapeClientRequest(page, proxyString)
 		if err != nil {
 			return nil, err
@@ -77,7 +76,9 @@ func GoogleScrapeMultiPage(searchTerm, countryCode, languageCode, proxyString st
 		for _, result := range data {
 			results = append(results, result)
 		}
-		time.Sleep(time.Duration(backoff) * time.Second)
+		if resultCounter != 0 {
+			time.Sleep(time.Duration(backoff) * time.Second)
+		}
 	}
 	return results, nil
 }
