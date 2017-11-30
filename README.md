@@ -1,5 +1,5 @@
 # googleGrabber
-Golang library for scraping search results. Currently, the library supports scraping results from Google and allows the caller to define a number of important variables.
+Golang library for scraping search results. Currently, the library supports scraping results from Google and allows the caller to define a number of important variables. The number of pages, count of results per page, Google domain and search language can all be customised.
 
 ## Example Usage - Google Scraping
 ```go
@@ -21,7 +21,7 @@ func main() {
 ```
 ### Parameters - Google Scraping
 * searchTerm - string
-* countryCode - string - Will return an error if country is not supported by Google.
+* countryCode - string - Will return an error if country is not supported by Google. "com" - will use Google.com
 * languageCode - string - The language used to search - in the format of an ISO 639-1 Code
 * proxyString - string - The proxy you wish to use for the particular scrape, an empty string to scrape without a proxy
 * pages - int - The number of pages you wish to scrape.
