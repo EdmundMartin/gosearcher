@@ -1,4 +1,4 @@
-package GoogleGrabber
+package googleGrabber
 
 var googleDomains = map[string]string{
 	"com": "https://www.google.com/search?q=",
