@@ -27,3 +27,13 @@ func main() {
 * pages - int - The number of pages you wish to scrape.
 * count - int - The number of results per page - multiples of 10 up to 100.
 * backoff - int - The time to wait in between scraping pages, if more than one page of results is being scraped.
+## Result Format
+```go
+type SearchResult struct {
+	ResultRank int
+	ResultURL string
+	ResultTitle string
+	ResultDesc string
+}
+```
+All supported search engines return a slice of SearchResult. This struct contains the rank, url, title and description of the particular result in question.
