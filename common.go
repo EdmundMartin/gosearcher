@@ -1,18 +1,18 @@
 package googleGrabber
 
 import (
-	"time"
+	"fmt"
+	"math/rand"
 	"net/http"
 	"net/url"
-	"math/rand"
-	"fmt"
+	"time"
 )
 
 type SearchResult struct {
-	ResultRank int
-	ResultURL string
+	ResultRank  int
+	ResultURL   string
 	ResultTitle string
-	ResultDesc string
+	ResultDesc  string
 }
 
 var userAgents = []string{
@@ -30,12 +30,18 @@ func randomUserAgent() string {
 	return userAgents[randNum]
 }
 
-func scrapeClientRequest(searchURL string, proxyString string) (*http.Response, error) {
-	baseClient := &http.Client{}
+func getScrapeClient(proxyString string) *http.Client {
 	if proxyString != "" {
 		proxyUrl, _ := url.Parse(proxyString)
-		baseClient = &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyUrl)}}
+		return &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyUrl)}}
+	} else {
+		return &http.Client{}
 	}
+}
+
+func scrapeClientRequest(searchURL string, proxyString string) (*http.Response, error) {
+
+	baseClient := getScrapeClient(proxyString)
 	req, _ := http.NewRequest("GET", searchURL, nil)
 	req.Header.Set("User-Agent", randomUserAgent())
 

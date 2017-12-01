@@ -1,16 +1,16 @@
 package googleGrabber
 
 import (
-	"strings"
 	"fmt"
-	"net/http"
 	"github.com/PuerkitoBio/goquery"
+	"net/http"
+	"strings"
 	"time"
 )
 
 func buildGoogleUrls(searchTerm, countryCode, languageCode string, pages, count int) ([]string, error) {
 	toScrape := []string{}
-	searchTerm = strings.Trim(searchTerm," ")
+	searchTerm = strings.Trim(searchTerm, " ")
 	searchTerm = strings.Replace(searchTerm, " ", "+", -1)
 	if googleBase, found := googleDomains[countryCode]; found {
 		for i := 0; i < pages; i++ {
@@ -25,7 +25,7 @@ func buildGoogleUrls(searchTerm, countryCode, languageCode string, pages, count 
 	return toScrape, nil
 }
 
-func googleResultParsing(response *http.Response, rank int) ([]SearchResult, error){
+func googleResultParsing(response *http.Response, rank int) ([]SearchResult, error) {
 	doc, err := goquery.NewDocumentFromResponse(response)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func googleResultParsing(response *http.Response, rank int) ([]SearchResult, err
 		desc := descTag.Text()
 		title := titleTag.Text()
 		link = strings.Trim(link, " ")
-		if link != "" && link != "#"{
+		if link != "" && link != "#" && !strings.HasPrefix(link, "/") {
 			result := SearchResult{
 				rank,
 				link,
@@ -56,7 +56,7 @@ func googleResultParsing(response *http.Response, rank int) ([]SearchResult, err
 	return results, err
 }
 
-func GoogleScrape(searchTerm, countryCode, languageCode, proxyString string, pages, count, backoff int) ([]SearchResult, error){
+func GoogleScrape(searchTerm, countryCode, languageCode, proxyString string, pages, count, backoff int) ([]SearchResult, error) {
 	results := []SearchResult{}
 	resultCounter := 0
 	googlePages, err := buildGoogleUrls(searchTerm, countryCode, languageCode, pages, count)
@@ -76,9 +76,7 @@ func GoogleScrape(searchTerm, countryCode, languageCode, proxyString string, pag
 		for _, result := range data {
 			results = append(results, result)
 		}
-		if resultCounter != 0 {
-			time.Sleep(time.Duration(backoff) * time.Second)
-		}
+		time.Sleep(time.Duration(backoff) * time.Second)
 	}
 	return results, nil
 }
