@@ -1,18 +1,18 @@
 package googleGrabber
 
 import (
-	"time"
+	"fmt"
+	"math/rand"
 	"net/http"
 	"net/url"
-	"math/rand"
-	"fmt"
+	"time"
 )
 
 type SearchResult struct {
-	ResultRank int
-	ResultURL string
+	ResultRank  int
+	ResultURL   string
 	ResultTitle string
-	ResultDesc string
+	ResultDesc  string
 }
 
 var userAgents = []string{
@@ -30,8 +30,13 @@ func randomUserAgent() string {
 	return userAgents[randNum]
 }
 
+<<<<<<< HEAD
+func getScrapeClient(proxyString string) *http.Client {
+	if proxyString != "" {
+=======
 func getScrapeClient(proxyString string) (*http.Client){
 	if proxyString != ""{
+>>>>>>> 89dfe44da31f0a601b25d6c76f2a0f30332b9878
 		proxyUrl, _ := url.Parse(proxyString)
 		return &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyUrl)}}
 	} else {
