@@ -37,3 +37,23 @@ type SearchResult struct {
 }
 ```
 All supported search engines return a slice of SearchResult. This struct contains the rank, url, title and description of the particular result in question.
+### Example Usage - Yandex Scraping
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/EdmundMartin/googleGrabber"
+)
+
+func main() {
+	res, err := googleGrabber.YandexScrape("Привет меня зовут", "com", "10393", "", 1, 30, 20)
+	if err == nil {
+		for _, res := range res {
+			fmt.Println(res)
+		}
+	} else {
+		fmt.Println(err)
+	}
+}
+```
