@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	res, err := googleGrabber.GoogleScrape("Edmund Martin", "com", "en", "", 1, 10, 10)
+	res, err := googleGrabber.GoogleScrape("Edmund Martin", "com", "en", nil, 1, 10, 10)
 	if err == nil {
 		for _, res := range res {
 			fmt.Println(res)
@@ -23,7 +23,7 @@ func main() {
 * searchTerm - string
 * countryCode - string - Will return an error if country is not supported by Google. "com" - will use Google.com
 * languageCode - string - The language used to search - in the format of an ISO 639-1 Code
-* proxyString - string - The proxy you wish to use for the particular scrape, an empty string to scrape without a proxy
+* proxyString - empty interface - The proxy (string format) you wish to use for the particular scrape, or nil to scrape without a proxy
 * pages - int - The number of pages you wish to scrape.
 * count - int - The number of results per page - multiples of 10 up to 100.
 * backoff - int - The time to wait in between scraping pages, if more than one page of results is being scraped.
