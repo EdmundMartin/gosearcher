@@ -27,7 +27,7 @@ func main() {
 * pages - int - The number of pages you wish to scrape.
 * count - int - The number of results per page - multiples of 10 up to 100.
 * backoff - int - The time to wait in between scraping pages, if more than one page of results is being scraped.
-### Example Usage - Yandex Scraping
+## Example Usage - Yandex Scraping
 ```go
 package main
 
