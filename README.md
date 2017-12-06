@@ -37,7 +37,7 @@ import (
 )
 
 func main() {
-	res, err := googleGrabber.YandexScrape("Привет меня зовут", "com", "10393", "", 1, 30, 20)
+	res, err := googleGrabber.YandexScrape("Привет меня зовут", "com", "10393", nil, 1, 30, 20)
 	if err == nil {
 		for _, res := range res {
 			fmt.Println(res)
