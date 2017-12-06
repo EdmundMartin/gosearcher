@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func buildYandexUrls(searchTerm, country, location string, pages, count int) ([]string, error) {
+func buildYandexUrls(searchTerm, country string, location interface{}, pages, count int) ([]string, error) {
 	toScrape := []string{}
 	searchTerm = strings.Trim(searchTerm, " ")
 	searchTerm = strings.Replace(searchTerm, " ", "%20", -1)
@@ -26,11 +26,13 @@ func buildYandexUrls(searchTerm, country, location string, pages, count int) ([]
 	return toScrape, nil
 }
 
-func returnLocation(location string) string {
-	if location == "" {
+func returnLocation(location interface{}) string {
+
+	switch v := location.(type){
+	case string:
+		return v
+	default:
 		return "1"
-	} else {
-		return location
 	}
 }
 
@@ -68,7 +70,7 @@ func yandexResultParser(response *http.Response, rank int) ([]SearchResult, erro
 	return results, err
 }
 
-func YandexScrape(searchTerm, country, location string, proxyString interface{}, pages, count, backoff int) ([]SearchResult, error) {
+func YandexScrape(searchTerm, country string, location, proxyString interface{}, pages, count, backoff int) ([]SearchResult, error) {
 	results := []SearchResult{}
 	yandexPages, err := buildYandexUrls(searchTerm, country, location, pages, count)
 	if err != nil {
@@ -76,6 +78,9 @@ func YandexScrape(searchTerm, country, location string, proxyString interface{},
 	}
 	for _, searchPage := range yandexPages {
 		res, err := scrapeClientRequest(searchPage, proxyString)
+		if strings.Contains(res.Request.URL.String(),"captcha"){
+			return nil, fmt.Errorf("yandex served a captcha to your request")
+		}
 		if err != nil {
 			return nil, err
 		}
