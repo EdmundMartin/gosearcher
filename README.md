@@ -1,4 +1,4 @@
-# googleGrabber
+# gosearcher
 Golang library for scraping search results. Currently, the library supports scraping results from Google and allows the caller to define a number of important variables. The number of pages, count of results per page, Google domain and search language can all be customised.
 
 ## Example Usage - Google Scraping
@@ -7,7 +7,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/EdmundMartin/googleGrabber"
+	"github.com/EdmundMartin/gosearcher"
 )
 
 func main() {
@@ -33,7 +33,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/EdmundMartin/googleGrabber"
+	"github.com/EdmundMartin/gosearcher"
 )
 
 func main() {
