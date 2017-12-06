@@ -68,7 +68,7 @@ func yandexResultParser(response *http.Response, rank int) ([]SearchResult, erro
 	return results, err
 }
 
-func YandexScrape(searchTerm, country, location, proxyString string, pages, count, backoff int) ([]SearchResult, error) {
+func YandexScrape(searchTerm, country, location string, proxyString interface{}, pages, count, backoff int) ([]SearchResult, error) {
 	results := []SearchResult{}
 	yandexPages, err := buildYandexUrls(searchTerm, country, location, pages, count)
 	if err != nil {

@@ -30,16 +30,19 @@ func randomUserAgent() string {
 	return userAgents[randNum]
 }
 
-func getScrapeClient(proxyString string) *http.Client {
-	if proxyString != "" {
-		proxyUrl, _ := url.Parse(proxyString)
+func getScrapeClient(proxyString interface{}) *http.Client {
+
+	switch v := proxyString.(type){
+	case string:
+		proxyUrl, _ := url.Parse(v)
 		return &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyUrl)}}
-	} else {
+	default:
 		return &http.Client{}
+		
 	}
 }
 
-func scrapeClientRequest(searchURL string, proxyString string) (*http.Response, error) {
+func scrapeClientRequest(searchURL string, proxyString interface{}) (*http.Response, error) {
 
 	baseClient := getScrapeClient(proxyString)
 	req, _ := http.NewRequest("GET", searchURL, nil)
