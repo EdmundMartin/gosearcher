@@ -1,5 +1,5 @@
 # gosearcher
-Golang library for scraping search results. Currently, the library supports scraping results from Google and allows the caller to define a number of important variables. The number of pages, count of results per page, Google domain and search language can all be customised.
+gosearcher is a small golang package which provides a number of functions that make it easy to scrape a number of popular search engines including Google, Yandex and soon Bing. The package supports the use proxies and multi-page scraping and allows users to scrape multiple pages of search results.
 
 ## Example Usage - Google Scraping
 ```go
