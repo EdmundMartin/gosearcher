@@ -1,4 +1,4 @@
-package googleGrabber
+package gosearcher
 
 import (
 	"fmt"
