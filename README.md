@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	res, err := googleGrabber.GoogleScrape("Edmund Martin", "com", "en", nil, 1, 10, 10)
+	res, err := gosearcher.GoogleScrape("Edmund Martin", "com", "en", nil, 1, 10, 10)
 	if err == nil {
 		for _, res := range res {
 			fmt.Println(res)
@@ -37,7 +37,7 @@ import (
 )
 
 func main() {
-	res, err := googleGrabber.YandexScrape("Привет меня зовут", "com", "10393", nil, 1, 30, 20)
+	res, err := gosearcher.YandexScrape("Привет меня зовут", "com", "10393", nil, 1, 30, 20)
 	if err == nil {
 		for _, res := range res {
 			fmt.Println(res)
