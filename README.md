@@ -53,7 +53,33 @@ func main() {
 * location - empty interface - Yandex's location code, can be a string or will use Moscow as base if nil is based. Full list can be found [here](https://yandex.ru/yaca/geo.c2n).
 * proxyString - empty interface - The proxy (string format) you wish to use for the particular scrape, or nil to scrape without a proxy
 * pages - int - The number of pages you wish to scrape.
-* count - int - The number of results per page - multiples of 10 up to 100.
+* count - int - The number of results per page - multiples of 10 up to 30.
+* backoff - int - The time to wait in between scraping pages, if more than one page of results is being scraped.
+## Example Usage - Bing Scraping
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/EdmundMartin/gosearcher"
+)
+
+func main() {
+	res, err := gosearcher.BingScrape("Edmund Martin", "com", nil, 2, 30, 30)
+	if err == nil {
+		for _, res := range res {
+			fmt.Println(res)
+		}
+	} else {
+		fmt.Println(err)
+	}
+}
+```
+* searchTerm - string
+* countryCode - string - Will return an error if country is not supported. 
+* proxyString - empty interface - The proxy (string format) you wish to use for the particular scrape, or nil to scrape without a proxy
+* pages - int - The number of pages you wish to scrape.
+* count - int - The number of results per page - multiples of 10 up to 50.
 * backoff - int - The time to wait in between scraping pages, if more than one page of results is being scraped.
 ## Result Format
 ```go
