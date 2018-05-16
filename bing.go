@@ -1,22 +1,23 @@
 package gosearcher
 
 import (
-	"strings"
 	"fmt"
 	"net/http"
-	"github.com/PuerkitoBio/goquery"
+	"strings"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
-func builBingUrls(searchTerm, country string, pages, count int) ([]string, error){
+func builBingUrls(searchTerm, country string, pages, count int) ([]string, error) {
 	toScrape := []string{}
 	searchTerm = strings.Trim(searchTerm, " ")
 	searchTerm = strings.Replace(searchTerm, " ", "+", -1)
 	if countryCode, found := bingDomains[country]; found {
 		for i := 0; i < pages; i++ {
 			first := firstParameter(i, count)
-			scrapeUrl := fmt.Sprintf("https://bing.com/search?q=%s&first=%d&count=%d%s", searchTerm, first, count, countryCode)
-			toScrape = append(toScrape, scrapeUrl)
+			scrapeURL := fmt.Sprintf("https://bing.com/search?q=%s&first=%d&count=%d%s", searchTerm, first, count, countryCode)
+			toScrape = append(toScrape, scrapeURL)
 		}
 	} else {
 		err := fmt.Errorf("country (%s) is currently not supported", country)
@@ -28,19 +29,18 @@ func builBingUrls(searchTerm, country string, pages, count int) ([]string, error
 func firstParameter(number, count int) int {
 	if number == 0 {
 		return number + 1
-	} else {
-		return number * count + 1
 	}
+	return number*count + 1
 }
 
-func bingResultParser(response *http.Response, rank int) ([]SearchResult, error){
+func bingResultParser(response *http.Response, rank int) ([]SearchResult, error) {
 	doc, err := goquery.NewDocumentFromResponse(response)
 	if err != nil {
 		return nil, err
 	}
 	results := []SearchResult{}
 	sel := doc.Find("li.b_algo")
-	rank += 1
+	rank++
 	for i := range sel.Nodes {
 		item := sel.Eq(i)
 		linkTag := item.Find("a")
@@ -58,19 +58,20 @@ func bingResultParser(response *http.Response, rank int) ([]SearchResult, error)
 				desc,
 			}
 			results = append(results, result)
-			rank += 1
+			rank++
 		}
 	}
 	return results, err
 }
 
-func BingScrape(searchTerm, country string, proxyString interface{}, pages, count, backoff int) ([]SearchResult, error){
+// BingScrape scrapes bing.com with desired parameters
+func BingScrape(searchTerm, country string, proxyString interface{}, pages, count, backoff int) ([]SearchResult, error) {
 	results := []SearchResult{}
 	bingPages, err := builBingUrls(searchTerm, country, pages, count)
 	if err != nil {
 		return nil, err
 	}
-	for _, page := range bingPages{
+	for _, page := range bingPages {
 		rank := len(results)
 		res, err := scrapeClientRequest(page, proxyString)
 		if err != nil {

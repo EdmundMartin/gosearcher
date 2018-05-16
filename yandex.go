@@ -2,11 +2,12 @@ package gosearcher
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
 	"net/http"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func buildYandexUrls(searchTerm, country string, location interface{}, pages, count int) ([]string, error) {
@@ -16,8 +17,8 @@ func buildYandexUrls(searchTerm, country string, location interface{}, pages, co
 	location = returnLocation(location)
 	if yandexBase, found := yandexDomains[country]; found {
 		for i := 0; i < pages; i++ {
-			scrapeUrl := fmt.Sprintf("%s%s&lr=%s&numdoc=%d&p=%d", yandexBase, searchTerm, location, count, i)
-			toScrape = append(toScrape, scrapeUrl)
+			scrapeURL := fmt.Sprintf("%s%s&lr=%s&numdoc=%d&p=%d", yandexBase, searchTerm, location, count, i)
+			toScrape = append(toScrape, scrapeURL)
 		}
 	} else {
 		err := fmt.Errorf("country (%s) is currently not supported", country)
@@ -28,7 +29,7 @@ func buildYandexUrls(searchTerm, country string, location interface{}, pages, co
 
 func returnLocation(location interface{}) string {
 
-	switch v := location.(type){
+	switch v := location.(type) {
 	case string:
 		return v
 	default:
@@ -45,7 +46,7 @@ func yandexResultParser(response *http.Response, rank int) ([]SearchResult, erro
 	}
 	results := []SearchResult{}
 	sel := doc.Find("li.serp-item")
-	rank += 1
+	rank++
 	for i := range sel.Nodes {
 		item := sel.Eq(i)
 		linkTag := item.Find("a")
@@ -64,12 +65,13 @@ func yandexResultParser(response *http.Response, rank int) ([]SearchResult, erro
 				desc,
 			}
 			results = append(results, result)
-			rank += 1
+			rank++
 		}
 	}
 	return results, err
 }
 
+// YandexScrape scrapes Yandex for SearchResults
 func YandexScrape(searchTerm, country string, location, proxyString interface{}, pages, count, backoff int) ([]SearchResult, error) {
 	results := []SearchResult{}
 	yandexPages, err := buildYandexUrls(searchTerm, country, location, pages, count)
@@ -78,7 +80,7 @@ func YandexScrape(searchTerm, country string, location, proxyString interface{},
 	}
 	for _, searchPage := range yandexPages {
 		res, err := scrapeClientRequest(searchPage, proxyString)
-		if strings.Contains(res.Request.URL.String(),"captcha"){
+		if strings.Contains(res.Request.URL.String(), "captcha") {
 			return nil, fmt.Errorf("yandex served a captcha to your request")
 		}
 		if err != nil {

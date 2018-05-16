@@ -2,10 +2,11 @@ package gosearcher
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func buildGoogleUrls(searchTerm, countryCode, languageCode string, pages, count int) ([]string, error) {
@@ -15,8 +16,8 @@ func buildGoogleUrls(searchTerm, countryCode, languageCode string, pages, count 
 	if googleBase, found := googleDomains[countryCode]; found {
 		for i := 0; i < pages; i++ {
 			start := i * count
-			scrapeUrl := fmt.Sprintf("%s%s&num=%s&hl=%s&start=%d&filter=0", googleBase, searchTerm, count, languageCode, start)
-			toScrape = append(toScrape, scrapeUrl)
+			scrapeURL := fmt.Sprintf("%s%s&num=%s&hl=%s&start=%d&filter=0", googleBase, searchTerm, count, languageCode, start)
+			toScrape = append(toScrape, scrapeURL)
 		}
 	} else {
 		err := fmt.Errorf("country (%s) is currently not supported", countryCode)
@@ -32,7 +33,7 @@ func googleResultParsing(response *http.Response, rank int) ([]SearchResult, err
 	}
 	results := []SearchResult{}
 	sel := doc.Find("div.g")
-	rank += 1
+	rank++
 	for i := range sel.Nodes {
 		item := sel.Eq(i)
 		linkTag := item.Find("a")
@@ -50,12 +51,13 @@ func googleResultParsing(response *http.Response, rank int) ([]SearchResult, err
 				desc,
 			}
 			results = append(results, result)
-			rank += 1
+			rank++
 		}
 	}
 	return results, err
 }
 
+// GoogleScrape scrapes the relevant Google search engine for SearchResults
 func GoogleScrape(searchTerm, countryCode, languageCode string, proxyString interface{}, pages, count, backoff int) ([]SearchResult, error) {
 	results := []SearchResult{}
 	resultCounter := 0

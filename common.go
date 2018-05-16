@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// SearchResult represents an individual result in the SERP page
 type SearchResult struct {
 	ResultRank  int
 	ResultURL   string
@@ -32,13 +33,13 @@ func randomUserAgent() string {
 
 func getScrapeClient(proxyString interface{}) *http.Client {
 
-	switch v := proxyString.(type){
+	switch v := proxyString.(type) {
 	case string:
 		proxyUrl, _ := url.Parse(v)
 		return &http.Client{Transport: &http.Transport{Proxy: http.ProxyURL(proxyUrl)}}
 	default:
 		return &http.Client{}
-		
+
 	}
 }
 
@@ -50,13 +51,12 @@ func scrapeClientRequest(searchURL string, proxyString interface{}) (*http.Respo
 
 	res, err := baseClient.Do(req)
 	if res.StatusCode != 200 {
-		err := fmt.Errorf("scraper receieved a non-200 status code suggesting a ban")
+		err := fmt.Errorf("scraper received a non-200 status code suggesting a ban")
 		return nil, err
 	}
 
 	if err != nil {
 		return nil, err
-	} else {
-		return res, nil
 	}
+	return res, nil
 }
